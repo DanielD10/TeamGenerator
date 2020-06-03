@@ -1,6 +1,6 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
-const intern = require("./lib/Intern");
+const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
@@ -61,39 +61,78 @@ startapp();
 async function startapp() {
   try {
     await promptManager();
-    const role = await promptRole();
-    //    console.log(role.role)
-    if (role.role === "Engineer") {
-      return inquirer.prompt([
-        {
-          name: "name",
-          type: "input",
-          message: "Name Of Engineer:",
-        },
-        {
-          name: "id",
-          type: "number",
-          message: "Engineers ID Number:",
-        },
-        {
-          name: "email",
-          type: "input",
-          message: " Engineer Email:",
-        },
-        {
-            name: "github",
-            type: "input",
-            message:"Engineers github username:"
-        }
-      ]).then(function (res) {
-        // console.log(res);
-        const { name, id, email, github } = res;
-        const engineer = new Engineer(name, id, email, github);
-        // console.log(manager);
-        team.push(engineer);
-        console.log(team);
-      });
-
+    promptOtherMembers();
+    async function promptOtherMembers() {
+      const role = await promptRole();
+      //    console.log(role.role)
+      if (role.role === "Engineer") {
+        return inquirer
+          .prompt([
+            {
+              name: "name",
+              type: "input",
+              message: "Name Of Engineer:",
+            },
+            {
+              name: "id",
+              type: "number",
+              message: "Engineers ID Number:",
+            },
+            {
+              name: "email",
+              type: "input",
+              message: " Engineer Email:",
+            },
+            {
+              name: "github",
+              type: "input",
+              message: "Engineers github username:",
+            },
+          ])
+          .then(function (res) {
+            // console.log(res);
+            const { name, id, email, github } = res;
+            const engineer = new Engineer(name, id, email, github);
+            // console.log(manager);
+            team.push(engineer);
+            // console.log(team);
+            return promptOtherMembers();
+          });
+      }
+      else if (role.role === "Intern") {
+        return inquirer
+          .prompt([
+            {
+              name: "name",
+              type: "input",
+              message: "Name Of Intern:",
+            },
+            {
+              name: "id",
+              type: "number",
+              message: "Interns ID Number:",
+            },
+            {
+              name: "email",
+              type: "input",
+              message: " Interns Email:",
+            },
+            {
+              name: "school",
+              type: "input",
+              message: "Place Intern attends School:",
+            },
+          ])
+          .then(function (res) {
+            // console.log(res);
+            const { name, id, email, school } = res;
+            const intern = new Intern (name, id, email, school);
+            // console.log(manager);
+            team.push(intern);
+            console.log(team);
+            return promptOtherMembers();
+          });
+      }
     }
   } catch (err) {
     console.log(err);
