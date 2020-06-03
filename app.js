@@ -132,7 +132,11 @@ async function startapp() {
             console.log(team);
             return promptOtherMembers();
           });
+      }else {
+        const renderedHtml = await render(team)
+      console.log(renderedHtml)
       }
+      
     }
   } catch (err) {
     console.log(err);
