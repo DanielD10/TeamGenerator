@@ -135,6 +135,12 @@ async function startapp() {
       }else {
         const renderedHtml = await render(team)
       console.log(renderedHtml)
+      fs.writeFile(outputPath,renderedHtml, function(err){
+          if (err){
+              console.log(err)
+          }
+          console.log("success")
+      })
       }
       
     }
